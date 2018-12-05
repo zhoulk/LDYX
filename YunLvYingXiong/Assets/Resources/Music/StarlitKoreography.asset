@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2076007791, guid: 7ab44e72661444ea4b3b72f155c6ecea, type: 3}
+  m_Name: StarlitKoreography
+  m_EditorClassIdentifier: 
+  mSourceClip: {fileID: 8300000, guid: 4f54c7037f1662a41b2fc980c8355551, type: 3}
+  mAudioFilePath: 
+  mSampleRate: 44100
+  mIgnoreLatencyOffset: 0
+  mTempoSections:
+  - sectionName: Section
+    startSample: 0
+    samplesPerBeat: 18900
+    beatsPerMeasure: 4
+    bStartNewMeasure: 1
+  - sectionName: Section
+    startSample: 0
+    samplesPerBeat: 18900
+    beatsPerMeasure: 4
+    bStartNewMeasure: 1
+  mTracks:
+  - {fileID: 11400000, guid: 24f70ca825f3dc94fa96ce6a4a524047, type: 2}

@@ -1,0 +1,55 @@
+﻿{
+    "version": 1,
+    "songs": [
+        {
+            "id": 1,
+            "songName": "",
+            "songUrl": "",
+            "songTracks": [
+                {
+                    "id": 1,
+                    "trackLevel": 1,
+                    "trackName": "",
+                    "trackUrl": ""
+                },
+                {
+                    "id": 2,
+                    "trackLevel": 2,
+                    "trackName": "",
+                    "trackUrl": ""
+                },
+                {
+                    "id": 3,
+                    "trackLevel": 3,
+                    "trackName": "",
+                    "trackUrl": ""
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "songName": "",
+            "songUrl": "",
+            "songTracks": [
+                {
+                    "id": 21,
+                    "trackLevel": 1,
+                    "trackName": "",
+                    "trackUrl": ""
+                },
+                {
+                    "id": 22,
+                    "trackLevel": 2,
+                    "trackName": "",
+                    "trackUrl": ""
+                },
+                {
+                    "id": 23,
+                    "trackLevel": 3,
+                    "trackName": "",
+                    "trackUrl": ""
+                }
+            ]
+        }
+    ]
+}
