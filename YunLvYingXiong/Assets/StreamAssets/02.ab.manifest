@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 3545654452
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5995b73de862b8c34cb2d28938eacb1d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 72333f9d3c3b4fe24608858b13aa21dd
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: -1223223985, guid: 7ab44e72661444ea4b3b72f155c6ecea, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/Music/02/StarlitTrackScaler.asset
+- Assets/Resources/Music/02/Starlit Black - Stem - Percussion.ogg
+- Assets/Resources/Music/02/StarlitTrackSpread.asset
+- Assets/Resources/Music/02/StarlitTrackOnomatopoeia.asset
+Dependencies: []

@@ -25,9 +25,14 @@ public class Song {
     public string songName;
 
     /// <summary>
-    /// 歌曲地址
+    /// 歌曲资源地址
     /// </summary>
-    public string songUrl;
+    public string songABUrl;
+
+    /// <summary>
+    /// 歌曲显示名称
+    /// </summary>
+    public string songTitle;
 
     /// <summary>
     /// 音轨列表

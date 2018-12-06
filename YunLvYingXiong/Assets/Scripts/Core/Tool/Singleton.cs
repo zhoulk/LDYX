@@ -27,5 +27,6 @@ public class Singleton<T> : IDisposable  where T:new() {
 
     public virtual void Dispose()
     {
+    
     }
 }

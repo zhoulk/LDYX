@@ -17,4 +17,9 @@ public static class GameObjectExtention {
         obj.transform.localPosition = Vector3.zero;
         obj.transform.localScale = Vector3.one;
     }
+
+    public static void AddData(this GameObject obj, Object data)
+    {
+        
+    }
 }

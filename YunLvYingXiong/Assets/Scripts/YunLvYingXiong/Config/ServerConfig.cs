@@ -13,5 +13,6 @@ public static class ServerConfig {
     public static string SERVER_IP = "127.0.0.1";
     public static int SERVER_PORT = 80;
 
-    public static string SongListUrl = "http://" + SERVER_IP + ":" + SERVER_PORT + "/res/song/songList.json";
+    public static string SongBaseUrl = "http://" + SERVER_IP + ":" + SERVER_PORT + "/res/song";
+    public static string SongListUrl = SongBaseUrl + "/songList.json";
 }

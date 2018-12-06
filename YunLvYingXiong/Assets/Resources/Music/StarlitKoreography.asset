@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: -2076007791, guid: 7ab44e72661444ea4b3b72f155c6ecea, type: 3}
   m_Name: StarlitKoreography
   m_EditorClassIdentifier: 
-  mSourceClip: {fileID: 8300000, guid: 4f54c7037f1662a41b2fc980c8355551, type: 3}
+  mSourceClip: {fileID: 0}
   mAudioFilePath: 
   mSampleRate: 44100
   mIgnoreLatencyOffset: 0

@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 241841589
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bf9c97a40608e6b7a9c3a90a58f8eff9
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 72333f9d3c3b4fe24608858b13aa21dd
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: -1223223985, guid: 7ab44e72661444ea4b3b72f155c6ecea, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/Music/01/StarlitTrackBump.asset
+- Assets/Resources/Music/01/Starlit Black - Stem - Harmony.ogg
+- Assets/Resources/Music/01/StarlitTrackColorSmooth.asset
+- Assets/Resources/Music/01/StarlitTrackColorJump.asset
+Dependencies: []

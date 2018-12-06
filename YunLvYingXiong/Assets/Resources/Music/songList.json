@@ -1,53 +1,55 @@
 ﻿{
-    "version": 1,
+    "version": 3,
     "songs": [
         {
             "id": 1,
-            "songName": "",
-            "songUrl": "",
+            "songName": "Starlit Black - Stem - Harmony",
+            "songTitle": "歌曲01",
+            "songABUrl": "01.ab",
             "songTracks": [
                 {
                     "id": 1,
                     "trackLevel": 1,
-                    "trackName": "",
-                    "trackUrl": ""
+                    "trackName": "StarlitTrackBump",
+                    "trackUrl": "01/tracks/StarlitTrackBump.asset"
                 },
                 {
                     "id": 2,
                     "trackLevel": 2,
-                    "trackName": "",
-                    "trackUrl": ""
+                    "trackName": "StarlitTrackColorJump",
+                    "trackUrl": "01/tracks/StarlitTrackColorJump.asset"
                 },
                 {
                     "id": 3,
                     "trackLevel": 3,
-                    "trackName": "",
-                    "trackUrl": ""
+                    "trackName": "StarlitTrackColorSmooth",
+                    "trackUrl": "01/tracks/StarlitTrackColorSmooth.asset"
                 }
             ]
         },
         {
             "id": 2,
-            "songName": "",
-            "songUrl": "",
+            "songName": "Starlit Black - Stem - Percussion",
+            "songABUrl": "02.ab",
+            "songTitle": "歌曲02",
             "songTracks": [
                 {
                     "id": 21,
                     "trackLevel": 1,
-                    "trackName": "",
-                    "trackUrl": ""
+                    "trackName": "StarlitTrackOnomatopoeia",
+                    "trackUrl": "02/tracks/StarlitTrackOnomatopoeia.asset"
                 },
                 {
                     "id": 22,
                     "trackLevel": 2,
-                    "trackName": "",
-                    "trackUrl": ""
+                    "trackName": "StarlitTrackScaler",
+                    "trackUrl": "02/tracks/StarlitTrackScaler.asset"
                 },
                 {
                     "id": 23,
                     "trackLevel": 3,
-                    "trackName": "",
-                    "trackUrl": ""
+                    "trackName": "StarlitTrackSpread",
+                    "trackUrl": "02/tracks/StarlitTrackSpread.asset"
                 }
             ]
         }

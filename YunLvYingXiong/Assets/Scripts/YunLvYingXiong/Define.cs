@@ -19,6 +19,9 @@ public class CtrlNames
     public static string UIRegiste = "UIRegisteViewCtrl";
 
     public static string UIMain = "UIMainViewCtrl";
+    public static string UIGuanKaMenu = "UIGuanKaMenuViewCtrl";
+    public static string UIGuanKaDetail = "UIGuanKaDetailViewCtrl";
+    public static string UIBattle = "UIBattleViewCtrl";
 
 }
 
@@ -30,6 +33,9 @@ public class PanelNames
     public static string UIRegiste = "UIRegisteView";
 
     public static string UIMain = "UIMainView";
+    public static string UIGuanKaMenu = "UIGuanKaMenuView";
+    public static string UIGuanKaDetail = "UIGuanKaDetailView";
+    public static string UIBattle = "UIBattleView";
 
 }
 

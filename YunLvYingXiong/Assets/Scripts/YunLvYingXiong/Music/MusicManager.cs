@@ -8,6 +8,8 @@ using UnityEngine;
 using SonicBloom.Koreo;
 using SonicBloom.Koreo.Players;
 
+public delegate void EventChangeHandler(MusicEventData data);
+
 public class MusicManager : Singleton<MusicManager> {
 
     /// <summary>
@@ -19,6 +21,36 @@ public class MusicManager : Singleton<MusicManager> {
     /// 简单播放器
     /// </summary>
     SimpleMusicPlayer m_simplePlayer;
+
+    public event EventChangeHandler EventChangeHandler;
+
+    AudioClip m_AudioClip;
+    public AudioClip AudioClip
+    {
+        get
+        {
+            return m_AudioClip;
+        }
+        set
+        {
+            m_AudioClip = value;
+            LoadGraphy();
+        }
+    }
+
+    KoreographyTrack m_Track;
+    public KoreographyTrack Track
+    {
+        get
+        {
+            return m_Track;
+        }
+        set
+        {
+            m_Track = value;
+            LoadGraphy();
+        }
+    }
 
     public void Init()
     {
@@ -32,25 +64,45 @@ public class MusicManager : Singleton<MusicManager> {
             GameObject.DontDestroyOnLoad(m_musicObj);
         }
 
-        Koreographer.Instance.RegisterForEvents("Bump", OnBumpChange);
-
-        //Koreography graphy = Resources.Load<Koreography>("Music/StarlitKoreography");
-        //AudioClip clip = Resources.Load<AudioClip>("Music/Starlit Black - Stem - Melody");
-        //graphy.SourceClip = clip;
-        //KoreographyTrack track = Resources.Load<KoreographyTrack>("Music/StarlitTrackBump");
-        //if (graphy.CanAddTrack(track))
-        //{
-        //    Debug.Log("can add");
-        //    graphy.AddTrack(track);
-        //}
-        //m_simplePlayer.LoadSong(graphy);
+        Koreographer.Instance.RegisterForEvents(MusicEvent.Easy, OnEventEasyChange);
     }
 
-    void OnBumpChange(KoreographyEvent evt)
+    void LoadGraphy()
+    {
+        if (m_AudioClip && m_Track)
+        {
+            Koreography graphy = Resources.Load<Koreography>("Music/StarlitKoreography");
+            graphy.SourceClip = m_AudioClip;
+            if (graphy.CanAddTrack(m_Track))
+            {
+                graphy.AddTrack(m_Track);
+            }
+            m_simplePlayer.LoadSong(graphy);
+        }
+    }
+
+    void OnEventEasyChange(KoreographyEvent evt)
     {
         string txt = evt.GetTextValue();
         float val = evt.GetFloatValue();
 
-        Debug.Log(txt + "   " + val);
+
+        MusicEventData data = new MusicEventData();
+        int oper = Random.Range(1,5);
+        data.oper = (MusicOper)oper;
+        data.player = MusicPlayer.P1;
+        data.content = "haha";
+
+        if (EventChangeHandler != null)
+        {
+            EventChangeHandler(data);
+        }
+    }
+
+    public override void Dispose()
+    {
+        m_AudioClip = null;
+        m_Track = null;
+        Koreographer.Instance.UnregisterForAllEvents(this);
     }
 }
