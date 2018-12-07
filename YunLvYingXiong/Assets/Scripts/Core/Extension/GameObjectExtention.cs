@@ -7,6 +7,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class GameObjectExtention {
 
@@ -18,8 +19,23 @@ public static class GameObjectExtention {
         obj.transform.localScale = Vector3.one;
     }
 
-    public static void AddData(this GameObject obj, Object data)
+    public static void AddOutLine(this GameObject obj)
     {
-        
+        if (!obj) return;
+
+        if (!obj.GetComponent<Outline>())
+        {
+            obj.AddComponent<Outline>();
+        }
+        obj.GetComponent<Outline>().enabled = true;
+    }
+
+    public static void RemoveOutLine(this GameObject obj)
+    {
+        if (!obj) return;
+
+        if (obj.GetComponent<Outline>()) {
+            obj.GetComponent<Outline>().enabled = false;
+        }
     }
 }

@@ -9,9 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Net;
 using UnityEngine;
-
-public delegate void LoadSongComplete(Song song);
 
 public class SongManager : Singleton<SongManager> {
 
@@ -24,23 +23,13 @@ public class SongManager : Singleton<SongManager> {
     /// </summary>
     private string m_localSongListTempFilePath;
 
-    AssetBundleCreateRequest m_AssetCreateRequst;
-    AssetBundleRequest m_AssetBundleRequest;
-    AssetBundle m_AssetBundle;
-
     Dictionary<int, AudioClip> m_AudioClipCache = new Dictionary<int, AudioClip>();
     Dictionary<int, KoreographyTrack> m_AudioTrackCache = new Dictionary<int, KoreographyTrack>();
-
-    Song m_CurrentLoadingSong;
-    Track m_CurrentLoadingTrack;
-    public event LoadSongComplete LoadSongComplete;
 
     public SongManager()
     {
         m_localSongListFilePath = PathConfig.LocalSongPath.AppendFileName("songList.json");
         m_localSongListTempFilePath = PathConfig.LocalTempSongPath.AppendFileName("songList.json");
-
-        DownloadManager.Instance.DownloadFileCompleted += OnDownloadFileCompleted;
     }
 
     public void OnUpdate()
@@ -104,101 +93,17 @@ public class SongManager : Singleton<SongManager> {
     /// <summary>
     /// 加载歌曲
     /// </summary>
-    public void LoadSong(Song song)
+    public void LoadSong(Song song, LoadSongProgress progressHandler, LoadSongComplete completeHandler)
     {
-        m_CurrentLoadingSong = song;
-        string songABPath = PathConfig.LocalSongPath.AppendFileName(song.songABUrl);
-        //string songABPath = Application.dataPath + "/StreamAssets/01.ab";
-        Debug.Log(songABPath);
-        if (File.Exists(songABPath))
-        {
-            m_AssetCreateRequst = AssetBundle.LoadFromFileAsync(songABPath, 0);
-            m_AssetCreateRequst.completed += OnCreateAssetBundleComplete;
-        }
-        else
-        {
-            DownloadManager.Instance.DownLoadFile(ServerConfig.SongBaseUrl + "/" + song.songABUrl, songABPath);
-        }
-    }
+        SongClient client = new SongClient();
 
-    void LoadSongToMemery()
-    {
-        m_AssetBundleRequest = m_AssetBundle.LoadAssetAsync<AudioClip>(m_CurrentLoadingSong.songName);
-        m_AssetBundleRequest.completed += OnLoadAudioClipComplete;
-    }
+        client.LoadSongProgress += progressHandler;
+        client.LoadSongComplete += completeHandler;
 
-    void LoadTrackToMemery()
-    {
-        m_AssetBundleRequest = m_AssetBundle.LoadAssetAsync<KoreographyTrack>(m_CurrentLoadingTrack.trackName);
-        m_AssetBundleRequest.completed += OnLoadKoreographyTrackComplete;
-    }
+        client.LoadSongProgress += OnLoadSongProgressHandler;
+        client.LoadSongComplete += OnLoadSongCompleteHandler;
 
-    void OnCreateAssetBundleComplete(UnityEngine.AsyncOperation oper)
-    {
-        m_AssetBundle = m_AssetCreateRequst.assetBundle;
-        LoadAllToMemery();
-    }
-
-    void LoadAllToMemery()
-    {
-        if (!m_AudioClipCache.ContainsKey(m_CurrentLoadingSong.id))
-        {
-            LoadSongToMemery();
-        }
-        else
-        {
-            bool isAllLoad = true;
-            foreach (var track in m_CurrentLoadingSong.songTracks)
-            {
-                if (!m_AudioTrackCache.ContainsKey(track.id))
-                {
-                    m_CurrentLoadingTrack = track;
-                    LoadTrackToMemery();
-                    isAllLoad = false;
-                }
-            }
-            if (isAllLoad)
-            {
-                if (LoadSongComplete != null)
-                {
-                    LoadSongComplete(m_CurrentLoadingSong);
-                }
-            }
-        }
-    }
-
-    void OnLoadAudioClipComplete(UnityEngine.AsyncOperation oper)
-    {
-        AudioClip clip = null;
-        if (m_AssetBundleRequest.asset.GetType().Equals(typeof(AudioClip)))
-        {
-            clip = (AudioClip)m_AssetBundleRequest.asset;
-        }
-
-        if (m_AudioClipCache.ContainsKey(m_CurrentLoadingSong.id))
-        {
-            m_AudioClipCache.Remove(m_CurrentLoadingSong.id);
-        }
-        m_AudioClipCache.Add(m_CurrentLoadingSong.id, clip);
-
-        LoadAllToMemery();
-    }
-
-    void OnLoadKoreographyTrackComplete(UnityEngine.AsyncOperation oper)
-    {
-        KoreographyTrack track = null;
-        if (m_AssetBundleRequest.asset.GetType().Equals(typeof(KoreographyTrack)))
-        {
-            track = (KoreographyTrack)m_AssetBundleRequest.asset;
-        }
-
-        if (m_AudioTrackCache.ContainsKey(m_CurrentLoadingTrack.id))
-        {
-            m_AudioTrackCache.Remove(m_CurrentLoadingTrack.id);
-        }
-        m_AudioTrackCache.Add(m_CurrentLoadingTrack.id, track);
-
-        LoadAllToMemery();
+        client.LoadSongAsync(song);
     }
 
     /// <summary>
@@ -254,7 +159,7 @@ public class SongManager : Singleton<SongManager> {
     /// </summary>
     private void DownLoadSongList()
     {
-        DownloadManager.Instance.DownLoadFile(ServerConfig.SongListUrl, m_localSongListTempFilePath);
+        DownloadManager.Instance.DownLoadFile(ServerConfig.SongListUrl, m_localSongListTempFilePath, OnDownloadSongProgress, OnDownloadSongCompleted);
     }
 
     /// <summary>
@@ -269,7 +174,12 @@ public class SongManager : Singleton<SongManager> {
         Debug.Log("update local songList complete!!!");
     }
 
-    void OnDownloadFileCompleted(AsyncCompletedEventArgs e)
+    void OnDownloadSongProgress(object sender, DownloadProgressChangedEventArgs e)
+    {
+       
+    }
+
+    void OnDownloadSongCompleted(object sender, AsyncCompletedEventArgs e)
     {
         if (e.Error == null && !e.Cancelled)
         {
@@ -281,15 +191,32 @@ public class SongManager : Singleton<SongManager> {
         {
             Debug.Log("load songList error!!!");
         }
+    }
 
-        if (m_CurrentLoadingSong != null)
+    void OnLoadSongProgressHandler(SongClient client, float progress)
+    {
+
+    }
+
+    void OnLoadSongCompleteHandler(SongClient client, Song song)
+    {
+        if (m_AudioClipCache.ContainsKey(song.id))
         {
-            LoadSong(m_CurrentLoadingSong);
+            m_AudioClipCache.Remove(song.id);
+        }
+        m_AudioClipCache.Add(song.id, client.AudioClip);
+
+        foreach (var track in client.AudioTracks)
+        {
+            if (m_AudioTrackCache.ContainsKey(track.Key))
+            {
+                m_AudioTrackCache.Remove(track.Key);
+            }
+            m_AudioTrackCache.Add(track.Key, track.Value);
         }
     }
 
     public override void Dispose()
     {
-        DownloadManager.Instance.DownloadFileCompleted -= OnDownloadFileCompleted;
     }
 }

@@ -51,8 +51,6 @@ public class UIGuanKaMenuView : BaseView{
     public override void StartView(params object[] args) {
         _iCtrl = (UIGuanKaMenuViewCtrl)iCtrl;
 
-        SongManager.Instance.LoadSongComplete += OnLoadSongComplete;
-
         InitTopUI();
         InitCenterUI();
 
@@ -162,12 +160,21 @@ public class UIGuanKaMenuView : BaseView{
         {
             if (!SongManager.Instance.IsSongLoaded(gk.song))
             {
-                SongManager.Instance.LoadSong(gk.song);
+                SongManager.Instance.LoadSong(gk.song, OnLoadSongProgress, OnLoadSongComplete);
+            }
+            else
+            {
+                OnLoadSongComplete(null, gk.song);
             }
         }
     }
 
-    void OnLoadSongComplete(Song song)
+    void OnLoadSongProgress(SongClient client, float progress)
+    {
+
+    }
+
+    void OnLoadSongComplete(SongClient client, Song song)
     {
         GuanKaItem item = null;
         foreach (var gkItem in m_guanKaItemCache)
@@ -209,6 +216,8 @@ public class UIGuanKaMenuView : BaseView{
         UIEventManager.Instance.RemoveClickHandler(m_LeftOperBtn);
         UIEventManager.Instance.RemoveClickHandler(m_RightOperBtn);
 
-        SongManager.Instance.LoadSongComplete -= OnLoadSongComplete;
+        m_guanKaCount = 0;
+        m_guanKaItems = null;
+        m_guanKaIndex = 1;
     }
 }

@@ -9,22 +9,11 @@ using System.ComponentModel;
 using System.Net;
 using UnityEngine;
 
-
-public delegate void DownloadFileProgressChangedEventHandler(DownloadProgressChangedEventArgs e);
-public delegate void DownloadFileCompleteEventHandler(AsyncCompletedEventArgs e);
-
 public class DownloadManager : Singleton<DownloadManager> {
-
-    private WebClient m_Client;
-
-    public event DownloadFileProgressChangedEventHandler DownloadProgressChanged;
-    public event DownloadFileCompleteEventHandler DownloadFileCompleted;
 
     public DownloadManager()
     {
-        m_Client = new WebClient();
-        m_Client.DownloadProgressChanged += OnDownLoadProgressChange;
-        m_Client.DownloadFileCompleted += OnDownloadFileCompleted;
+
     }
 
     /// <summary>
@@ -32,9 +21,12 @@ public class DownloadManager : Singleton<DownloadManager> {
     /// </summary>
     /// <param name="url"></param>
     /// <param name="localPath"></param>
-    public void DownLoadFile(string url, string localPath)
+    public void DownLoadFile(string url, string localPath, DownloadProgressChangedEventHandler OnDownLoadProgressChange, AsyncCompletedEventHandler OnDownloadFileCompleted)
     {
         Uri uri = new Uri(url);
+        WebClient m_Client = new WebClient();
+        m_Client.DownloadProgressChanged += OnDownLoadProgressChange;
+        m_Client.DownloadFileCompleted += OnDownloadFileCompleted;
 
         if (FileHelper.SafeCreateDictionary(localPath))
         {
@@ -42,26 +34,8 @@ public class DownloadManager : Singleton<DownloadManager> {
         }
     }
 
-    void OnDownLoadProgressChange(object sender, DownloadProgressChangedEventArgs e)
-    {
-        Debug.Log("loading ... " + e.BytesReceived + " / " + e.TotalBytesToReceive);
-        if (DownloadProgressChanged != null)
-        {
-            DownloadProgressChanged(e);
-        }
-    }
-
-    void OnDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-    {
-        if (DownloadFileCompleted != null)
-        {
-            DownloadFileCompleted(e);
-        }
-    }
-
     public override void Dispose()
     {
-        m_Client.DownloadProgressChanged -= OnDownLoadProgressChange;
-        m_Client.DownloadFileCompleted -= OnDownloadFileCompleted;
+        
     }
 }

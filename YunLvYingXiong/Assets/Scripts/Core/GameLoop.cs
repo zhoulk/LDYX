@@ -17,6 +17,7 @@ public class GameLoop : MonoBehaviour {
 
         ViewManager.Instance.OnUpdate();
         SongManager.Instance.OnUpdate();
+        UIEventManager.Instance.OnUpdate();
     }
 
     private void LateUpdate()

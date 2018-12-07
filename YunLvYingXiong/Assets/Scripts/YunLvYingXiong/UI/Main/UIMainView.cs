@@ -45,6 +45,23 @@ public class UIMainView : BaseView{
         UIEventManager.Instance.AddOnClickHandler(m_heZouBtn, OnHeZouClick);
         UIEventManager.Instance.AddOnClickHandler(m_onLinePKBtn, OnOnLinePKClick);
         UIEventManager.Instance.AddOnClickHandler(m_settingBtn, OnSettingClick);
+
+        m_chuangGuanBtn.AddNaviRight(m_PKBtn);
+        m_chuangGuanBtn.AddNaviLeft(m_settingBtn);
+
+        m_PKBtn.AddNaviRight(m_heZouBtn);
+        m_PKBtn.AddNaviLeft(m_chuangGuanBtn);
+
+        m_heZouBtn.AddNaviRight(m_onLinePKBtn);
+        m_heZouBtn.AddNaviLeft(m_PKBtn);
+
+        m_onLinePKBtn.AddNaviRight(m_settingBtn);
+        m_onLinePKBtn.AddNaviLeft(m_heZouBtn);
+
+        m_settingBtn.AddNaviRight(m_chuangGuanBtn);
+        m_settingBtn.AddNaviLeft(m_onLinePKBtn);
+
+        m_chuangGuanBtn.SetAsDefaultNavi();
     }
 
     public override void OnBeforeDestroy()

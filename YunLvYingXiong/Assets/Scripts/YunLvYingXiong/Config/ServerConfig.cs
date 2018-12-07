@@ -10,7 +10,7 @@ using UnityEngine;
 
 public static class ServerConfig {
 
-    public static string SERVER_IP = "127.0.0.1";
+    public static string SERVER_IP = "172.16.4.112";
     public static int SERVER_PORT = 80;
 
     public static string SongBaseUrl = "http://" + SERVER_IP + ":" + SERVER_PORT + "/res/song";
