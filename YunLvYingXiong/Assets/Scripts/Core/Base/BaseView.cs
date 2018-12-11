@@ -51,6 +51,7 @@ public abstract class BaseView {
         }
     }
 
+    public virtual void OnResume(params object[] args) { }
     public virtual void OnUpdate() { }
     public virtual void OnLateUpdate() { }
     public virtual void OnBeforeDestroy() { }

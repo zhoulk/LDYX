@@ -21,6 +21,18 @@ public class UIEventManager : Singleton<UIEventManager> {
     Dictionary<GameObject, OnClick> m_ClickHandlerDic = new Dictionary<GameObject, OnClick>();
 
     GameObject m_SelectedGameObject;
+    public GameObject SelectedGameObject
+    {
+        get
+        {
+            return m_SelectedGameObject;
+        }
+        set
+        {
+            m_SelectedGameObject = value;
+            m_SelectedGameObject.AddOutLine();
+        }
+    }
 
     /// <summary>
     /// 添加点击事件处理
@@ -67,8 +79,9 @@ public class UIEventManager : Singleton<UIEventManager> {
     {
         if (m_SelectedGameObject == null)
         {
-            m_SelectedGameObject = UINaviManager.Instance.DefaultObject;
-            m_SelectedGameObject.AddOutLine();
+            //m_SelectedGameObject = UINaviManager.Instance.DefaultObject;
+            //m_SelectedGameObject.AddOutLine();
+            return;
         }
         if (LTInput.GetKeyDown(KeyCode2.Up))
         {
@@ -108,7 +121,6 @@ public class UIEventManager : Singleton<UIEventManager> {
         }
         else if (LTInput.GetKeyDown(KeyCode2.A))
         {
-            Debug.Log("home");
             if (m_SelectedGameObject)
             {
                 if (m_ClickHandlerDic.ContainsKey(m_SelectedGameObject))
@@ -117,5 +129,10 @@ public class UIEventManager : Singleton<UIEventManager> {
                 }
             }
         }
+    }
+
+    public override void Dispose()
+    {
+        m_SelectedGameObject = null;
     }
 }

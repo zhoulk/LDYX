@@ -51,6 +51,7 @@ public class UINaviManager : Singleton<UINaviManager> {
         set
         {
             m_defaultObject = value;
+            UIEventManager.Instance.SelectedGameObject = m_defaultObject;
         }
     }
 

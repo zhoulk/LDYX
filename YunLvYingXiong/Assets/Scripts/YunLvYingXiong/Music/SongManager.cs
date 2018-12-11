@@ -127,12 +127,19 @@ public class SongManager : Singleton<SongManager> {
         {
             string tempSongListTxt = File.ReadAllText(m_localSongListTempFilePath);
             tempConfig = JsonUtility.FromJson<SongConfig>(tempSongListTxt);
-
+        }
+        catch(Exception e)
+        {
+            Debug.Log("check update error !!!" + e.Message);
+        }
+        try
+        {
             string localSongListTxt = File.ReadAllText(m_localSongListFilePath);
             localConfig = JsonUtility.FromJson<SongConfig>(localSongListTxt);
         }
-        catch(Exception)
+        catch (Exception e)
         {
+            Debug.Log("check update error !!!" + e.Message);
         }
         if (localConfig != null)
         {
@@ -167,7 +174,11 @@ public class SongManager : Singleton<SongManager> {
     /// </summary>
     private void UpdateLocalSongList(SongConfig config)
     {
-        if (config == null) return;
+        if (config == null)
+        {
+            Debug.LogError("update local songList error!!!   SongConfig is null");
+            return;
+        }
         FileHelper.SafeCreateDictionary(m_localSongListFilePath);
         File.WriteAllText(m_localSongListFilePath, JsonUtility.ToJson(config));
 
@@ -189,7 +200,7 @@ public class SongManager : Singleton<SongManager> {
         }
         else
         {
-            Debug.Log("load songList error!!!");
+            Debug.Log("load songList error!!!" + e.Error);
         }
     }
 

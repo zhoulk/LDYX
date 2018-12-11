@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 1297224335
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 86b5d958cdaabacfcb16034de7058d32
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 72333f9d3c3b4fe24608858b13aa21dd
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: -1223223985, guid: aa81bbec85a3f423193272a7c6154986, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/Music/nanniandejing/nanniandejing_2.asset
+- Assets/Resources/Music/nanniandejing/nanniandejing_xiuzheng.mp3
+- Assets/Resources/Music/nanniandejing/nanniandejing_3.asset
+- Assets/Resources/Music/nanniandejing/nanniandejing_1.asset
+Dependencies: []

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: -1223223985, guid: 7ab44e72661444ea4b3b72f155c6ecea, type: 3}
   m_Name: StarlitTrackSpread
   m_EditorClassIdentifier: 
-  mEventID: Spread
+  mEventID: hard
   mEventList:
   - mStartSample: 393
     mEndSample: 6299

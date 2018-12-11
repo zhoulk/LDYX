@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: -1223223985, guid: 7ab44e72661444ea4b3b72f155c6ecea, type: 3}
   m_Name: StarlitTrackScaler
   m_EditorClassIdentifier: 
-  mEventID: Scaler
+  mEventID: normal
   mEventList:
   - mStartSample: 0
     mEndSample: 154349

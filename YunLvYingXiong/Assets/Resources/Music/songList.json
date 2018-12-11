@@ -1,29 +1,27 @@
 ﻿{
-    "version": 3,
+    "version": 6,
     "songs": [
         {
             "id": 1,
             "songName": "Starlit Black - Stem - Harmony",
             "songTitle": "歌曲01",
             "songABUrl": "01.ab",
+            "graphyName": "StarlitKoreography",
             "songTracks": [
                 {
                     "id": 1,
                     "trackLevel": 1,
-                    "trackName": "StarlitTrackBump",
-                    "trackUrl": "01/tracks/StarlitTrackBump.asset"
+                    "trackName": "StarlitTrackBump"
                 },
                 {
                     "id": 2,
                     "trackLevel": 2,
-                    "trackName": "StarlitTrackColorJump",
-                    "trackUrl": "01/tracks/StarlitTrackColorJump.asset"
+                    "trackName": "StarlitTrackColorJump"
                 },
                 {
                     "id": 3,
                     "trackLevel": 3,
-                    "trackName": "StarlitTrackColorSmooth",
-                    "trackUrl": "01/tracks/StarlitTrackColorSmooth.asset"
+                    "trackName": "StarlitTrackColorSmooth"
                 }
             ]
         },
@@ -32,24 +30,46 @@
             "songName": "Starlit Black - Stem - Percussion",
             "songABUrl": "02.ab",
             "songTitle": "歌曲02",
+            "graphyName": "StarlitKoreography",
             "songTracks": [
                 {
                     "id": 21,
                     "trackLevel": 1,
-                    "trackName": "StarlitTrackOnomatopoeia",
-                    "trackUrl": "02/tracks/StarlitTrackOnomatopoeia.asset"
+                    "trackName": "StarlitTrackOnomatopoeia"
                 },
                 {
                     "id": 22,
                     "trackLevel": 2,
-                    "trackName": "StarlitTrackScaler",
-                    "trackUrl": "02/tracks/StarlitTrackScaler.asset"
+                    "trackName": "StarlitTrackScaler"
                 },
                 {
                     "id": 23,
                     "trackLevel": 3,
-                    "trackName": "StarlitTrackSpread",
-                    "trackUrl": "02/tracks/StarlitTrackSpread.asset"
+                    "trackName": "StarlitTrackSpread"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "songName": "nanniandejing_xiuzheng",
+            "songABUrl": "nanniandejing.ab",
+            "songTitle": "难念的经",
+            "graphyName": "StarlitKoreography",
+            "songTracks": [
+                {
+                    "id": 31,
+                    "trackLevel": 1,
+                    "trackName": "nanniandejing_1"
+                },
+                {
+                    "id": 32,
+                    "trackLevel": 2,
+                    "trackName": "nanniandejing_2"
+                },
+                {
+                    "id": 33,
+                    "trackLevel": 3,
+                    "trackName": "nanniandejing_3"
                 }
             ]
         }

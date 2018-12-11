@@ -15,13 +15,10 @@ using LTGame;
 class BulletItem
 {
     public GameObject obj;
-    public GameObject upObj;
-    public GameObject longUpObj;
-    public GameObject downObj;
-    public GameObject longDownObj;
+    public Image bgImage;
+    public Text contentText;
 
-    public RectTransform longUpMaskTrans;
-    public RectTransform longDownMaskTrans;
+    public RectTransform maskTrans;
 
     public MusicEventData musicData;
     public int outScore;
@@ -30,8 +27,7 @@ class BulletItem
     public Vector2 collisionSize;
     public Vector3 collisionPoint;
 
-    public Vector2 longUpMaskSize;
-    public Vector2 longDownMaskSize;
+    public Vector2 maskSize;
 }
 
 enum BulletState{
@@ -52,6 +48,14 @@ public class UIBattleView : BaseView{
 
     GameObject m_OutTarget;
     GameObject m_InnerTarget;
+
+    Color32 m_upColor = new Color32(0,255,255,255);
+    Color32 m_longUpColor = new Color32(0, 0, 255, 255);
+    Color32 m_downColor = new Color32(255, 0, 255, 255);
+    Color32 m_longDownColor = new Color32(255, 255, 0, 255);
+
+    float m_Speed = 5.0f;
+    float m_OneSmapleLength = 200;
 
     LinkedList<BulletItem> m_BulletObjs = new LinkedList<BulletItem>();
 
@@ -78,13 +82,19 @@ public class UIBattleView : BaseView{
 
     public override void OnUpdate()
     {
+        if (!MusicManager.Instance.IsPlaying())
+        {
+            _iCtrl.Close();
+            return;
+        }
+
         LinkedListNode<BulletItem> temp = m_BulletObjs.First;
         while (temp != null)
         {
             BulletState bulletState = BulletState.Normal;
             BulletItem item = temp.Value;
             MusicEventData musicData = item.musicData;
-            float bulletCollisionX1 = item.obj.transform.position.x - item.collisionSize.x;
+            float bulletCollisionX1 = item.obj.transform.position.x; // - item.collisionSize.x * 0.5f;
 
             if (bulletCollisionX1 <= m_Player.transform.position.x)
             {
@@ -103,11 +113,37 @@ public class UIBattleView : BaseView{
                 }
             }
 
+            //Debug.Log(bulletState);
             switch (bulletState)
             {
                 case BulletState.Dead:
                         m_BulletObjs.Remove(temp);
                         GameObject.Destroy(item.obj);
+                    break;
+                case BulletState.Normal:
+                    switch (musicData.oper)
+                    {
+                        case MusicOper.LongUp:
+                            if (LTInput.GetKey(KeyCode2.Left))
+                            {
+                                if (item.collisionPoint != Vector3.zero)
+                                {
+                                    float offset = item.collisionPoint.x - bulletCollisionX1;
+                                    item.maskTrans.sizeDelta = new Vector2(item.maskSize.x - offset, item.maskTrans.sizeDelta.y);
+                                }
+                            }
+                            break;
+                        case MusicOper.LongDown:
+                            if (LTInput.GetKey(KeyCode2.Right))
+                            {
+                                if (item.collisionPoint != Vector3.zero)
+                                {
+                                    float offset = Mathf.Abs(item.collisionPoint.x - bulletCollisionX1);
+                                    item.maskTrans.sizeDelta = new Vector2(item.maskSize.x - offset, item.maskTrans.sizeDelta.y);
+                                }
+                            }
+                            break;
+                    }
                     break;
                 case BulletState.IntoOut:
                 case BulletState.IntoInner:
@@ -115,14 +151,14 @@ public class UIBattleView : BaseView{
                         switch (musicData.oper)
                         {
                             case MusicOper.Up:
-                                if (LTInput.GetKeyDown(KeyCode2.Up))
+                                if (LTInput.GetKeyDown(KeyCode2.Left))
                                 {
                                     m_BulletObjs.Remove(temp);
                                     GameObject.Destroy(item.obj);
                                 }
                                 break;
                             case MusicOper.LongUp:
-                                if (LTInput.GetKey(KeyCode2.Up))
+                                if (LTInput.GetKey(KeyCode2.Left))
                                 {
                                     if (item.collisionPoint == Vector3.zero)
                                     {
@@ -130,25 +166,25 @@ public class UIBattleView : BaseView{
                                     }
 
                                     float offset = item.collisionPoint.x - bulletCollisionX1;
-                                    item.longUpMaskTrans.sizeDelta = new Vector2(item.longUpMaskSize.x - offset, item.longUpMaskSize.y);
+                                    item.maskTrans.sizeDelta = new Vector2(item.maskSize.x - offset, item.maskTrans.sizeDelta.y);
                                 }
                                 break;
                             case MusicOper.Down:
-                                if (LTInput.GetKeyDown(KeyCode2.Down))
+                                if (LTInput.GetKeyDown(KeyCode2.Right))
                                 {
                                     m_BulletObjs.Remove(temp);
                                     GameObject.Destroy(item.obj);
                                 }
                                 break;
                             case MusicOper.LongDown:
-                                if (LTInput.GetKey(KeyCode2.Down))
+                                if (LTInput.GetKey(KeyCode2.Right))
                                 {
                                     if (item.collisionPoint == Vector3.zero)
                                     {
                                         item.collisionPoint = new Vector3(bulletCollisionX1, 0, 0);
                                     }
                                     float offset = Mathf.Abs(item.collisionPoint.x - bulletCollisionX1);
-                                    item.longDownMaskTrans.sizeDelta = new Vector2(item.longDownMaskSize.x - offset, item.longDownMaskSize.y);
+                                    item.maskTrans.sizeDelta = new Vector2(item.maskSize.x - offset, item.maskTrans.sizeDelta.y);
                                 }
                                 break;
                         }
@@ -165,6 +201,7 @@ public class UIBattleView : BaseView{
         MusicManager.Instance.EventChangeHandler += OnEventChangeHandler;
 
         AudioClip audioClip = SongManager.Instance.GetAudioClip(m_GuanKa.song.id);
+
         Track track = null;
         foreach (var tr in m_GuanKa.song.songTracks)
         {
@@ -180,6 +217,8 @@ public class UIBattleView : BaseView{
         }
         MusicManager.Instance.AudioClip = audioClip;
         MusicManager.Instance.Track = graphyTrack;
+
+        Debug.Log("load music complete");
     }
 
     void InitCenterUI()
@@ -194,10 +233,6 @@ public class UIBattleView : BaseView{
         m_InnerTargetX1 = m_InnerTarget.transform.position.x - m_InnerTarget.transform.GetComponent<RectTransform>().sizeDelta.x * 0.5f;
         m_InnerTargetX2 = m_InnerTarget.transform.position.x + m_InnerTarget.transform.GetComponent<RectTransform>().sizeDelta.x * 0.5f;
 
-        Debug.Log(m_OutTargetX1);
-        Debug.Log(m_OutTargetX2);
-        Debug.Log(m_InnerTargetX1);
-        Debug.Log(m_InnerTargetX2);
     }
 
     void InitBullet()
@@ -206,61 +241,71 @@ public class UIBattleView : BaseView{
         m_Bullet = transform.Find("center/bullets/bullet").gameObject;
     }
 
-    bool isCreate = false;
+    //bool isCreate = false;
     void OnEventChangeHandler(MusicEventData data)
     {
-        if (!isCreate)
-        {
-            data.oper = MusicOper.LongUp;
-            isCreate = true;
-        }
-        else
-        {
-            return;
-        }
+        //if (!isCreate)
+        //{
+        //    data.oper = MusicOper.LongUp;
+        //    isCreate = true;
+        //}
+        //else
+        //{
+        //    return;
+        //}
         GameObject bulletObj = GameObject.Instantiate(m_Bullet);
         bulletObj.Attach(m_Bullets);
 
         bulletObj.transform.position = m_Enermy.transform.position;
         bulletObj.SetActive(true);
-        bulletObj.transform.DOMoveX(m_Player.transform.position.x, 5.0f).SetEase(Ease.Linear);
+        bulletObj.transform.DOMoveX(m_Player.transform.position.x, m_Speed).SetEase(Ease.Linear);
 
         BulletItem item = new BulletItem();
         item.obj = bulletObj;
-        item.upObj = bulletObj.transform.Find("up").gameObject;
-        item.longUpObj = bulletObj.transform.Find("longUp").gameObject;
-        item.downObj = bulletObj.transform.Find("down").gameObject;
-        item.longDownObj = bulletObj.transform.Find("longDown").gameObject;
-        item.longUpMaskTrans = bulletObj.transform.Find("longUp").GetComponent<RectTransform>();
-        item.longDownMaskTrans = bulletObj.transform.Find("longDown").GetComponent<RectTransform>();
+        item.bgImage = bulletObj.transform.Find("bg").GetComponent<Image>();
+        item.contentText = bulletObj.transform.Find("bg/Text").GetComponent<Text>();
+        item.maskTrans = bulletObj.transform.Find("bg").GetComponent<RectTransform>();
         item.musicData = data;
         item.collisionSize = bulletObj.GetComponent<RectTransform>().sizeDelta;
-        item.longUpMaskSize = item.longUpMaskTrans.sizeDelta;
-        item.longDownMaskSize = item.longDownMaskTrans.sizeDelta;
 
         switch (data.oper)
         {
             case MusicOper.Up:
-                item.upObj.SetActive(true);
                 item.outScore = 100;
                 item.innerScore = 150;
+                item.bgImage.color = m_upColor;
                 break;
             case MusicOper.LongUp:
-                item.longUpObj.SetActive(true);
                 item.outScore = 200;
                 item.innerScore = 300;
+                item.bgImage.color = m_longUpColor;
                 break;
             case MusicOper.Down:
-                item.downObj.SetActive(true);
                 item.outScore = 100;
                 item.innerScore = 150;
+                item.bgImage.color = m_downColor;
                 break;
             case MusicOper.LongDown:
-                item.longDownObj.SetActive(true);
                 item.outScore = 200;
                 item.innerScore = 300;
+                item.bgImage.color = m_longDownColor;
                 break;
         }
+
+        item.contentText.text = data.content;
+
+        float width = item.contentText.TextWidth();
+        if (data.sampleLen > 0)
+        {
+            if (data.sampleLen * m_OneSmapleLength > width)
+            {
+                width = data.sampleLen * m_OneSmapleLength;
+            }
+        }
+
+        item.maskSize = new Vector2(width, 0);
+        item.bgImage.GetComponent<RectTransform>().offsetMax = new Vector2(width, 0);
+        item.bgImage.GetComponent<RectTransform>().sizeDelta = new Vector2(width, 36);
 
         m_BulletObjs.AddLast(item);
     }
@@ -269,5 +314,7 @@ public class UIBattleView : BaseView{
     {
         MusicManager.Instance.EventChangeHandler -= OnEventChangeHandler;
         MusicManager.Instance.Dispose();
+
+        m_BulletObjs.Clear();
     }
 }

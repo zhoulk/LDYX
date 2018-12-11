@@ -28,8 +28,4 @@ public class Track {
     /// </summary>
     public string trackName;
 
-    /// <summary>
-    /// 音轨地址
-    /// </summary>
-    public string trackUrl;
 }

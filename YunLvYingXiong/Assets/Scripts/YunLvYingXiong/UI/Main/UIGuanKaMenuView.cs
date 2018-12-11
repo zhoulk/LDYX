@@ -29,6 +29,8 @@ public class UIGuanKaMenuView : BaseView{
     GameObject m_LeftOperBtn;
     GameObject m_RightOperBtn;
 
+    GameObject m_CurrentGuanKaObj;
+
     /// <summary>
     /// 关卡数量
     /// </summary>
@@ -54,11 +56,20 @@ public class UIGuanKaMenuView : BaseView{
         InitTopUI();
         InitCenterUI();
 
+        InitNavi();
+
+        IntiData();
+    }
+
+    public override void OnResume(params object[] args)
+    {
         IntiData();
     }
 
     void IntiData()
     {
+        Debug.Log("guankaMenuView IntiData");
+
         m_guanKaItems = GuanKaLogic.Instance.GetGuanKaList().ToArray();
         m_guanKaCount = m_guanKaItems.Length;
         m_guanKaMaxWidth = (m_guanKaCount > 0 ? m_guanKaCount - 1 : 0)* m_guanKaItemWidth;
@@ -91,6 +102,9 @@ public class UIGuanKaMenuView : BaseView{
         }
 
         LoadSong();
+
+        ChangeGuanKaObjNavi();
+        m_CurrentGuanKaObj.SetAsDefaultNavi();
     }
 
     void OnClickGuanKaItem(GameObject obj)
@@ -120,6 +134,17 @@ public class UIGuanKaMenuView : BaseView{
         UIEventManager.Instance.AddOnClickHandler(m_RightOperBtn, OnRightClick);
     }
 
+    void InitNavi()
+    {
+        m_BackBtn.AddNaviDown(m_LeftOperBtn);
+        m_BackBtn.AddNaviRight(m_LeftOperBtn);
+
+        m_LeftOperBtn.AddNaviUp(m_BackBtn);
+        m_RightOperBtn.AddNaviUp(m_BackBtn);
+        m_LeftOperBtn.AddNaviLeft(m_RightOperBtn);
+        m_RightOperBtn.AddNaviRight(m_LeftOperBtn);
+    }
+
     void OnBackClick(GameObject obj)
     {
         _iCtrl.Close();
@@ -137,6 +162,8 @@ public class UIGuanKaMenuView : BaseView{
         m_GuanKaListScrollRect.content.DOLocalMoveX(-1 * (m_guanKaIndex - 1) * m_guanKaItemWidth, 0.25f, true);
 
         LoadSong();
+
+        ChangeGuanKaObjNavi();
     }
 
     void OnRightClick(GameObject obj)
@@ -151,6 +178,8 @@ public class UIGuanKaMenuView : BaseView{
         m_GuanKaListScrollRect.content.DOLocalMoveX(-1 * (m_guanKaIndex-1) * m_guanKaItemWidth, 0.25f, true);
 
         LoadSong();
+
+        ChangeGuanKaObjNavi();
     }
 
     void LoadSong()
@@ -207,6 +236,23 @@ public class UIGuanKaMenuView : BaseView{
         else
         {
             return m_guanKaItems[m_guanKaIndex - 1];
+        }
+    }
+
+    void ChangeGuanKaObjNavi()
+    {
+        if (m_guanKaIndex < 1 || m_guanKaIndex > m_guanKaItemCache.Count)
+        {
+            Debug.LogError("关卡计数异常 m_guanKaIndex = " + m_guanKaIndex);
+        }
+        else
+        {
+            m_CurrentGuanKaObj = m_guanKaItemCache[m_guanKaIndex - 1].image.gameObject;
+            Debug.Log(m_CurrentGuanKaObj);
+            m_LeftOperBtn.AddNaviRight(m_CurrentGuanKaObj);
+            m_RightOperBtn.AddNaviLeft(m_CurrentGuanKaObj);
+            m_CurrentGuanKaObj.AddNaviLeft(m_LeftOperBtn);
+            m_CurrentGuanKaObj.AddNaviRight(m_RightOperBtn);
         }
     }
 

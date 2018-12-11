@@ -14,6 +14,7 @@ public class UIGuanKaDetailViewCtrl : BaseCtrl
     public void Close()
     {
         CtrlManager.Instance.CloseCtrl(CtrlNames.UIGuanKaDetail);
+        CtrlManager.Instance.OpenCtrl(CtrlNames.UIGuanKaMenu);
     }
 
     public void ShowBattleView(GuanKa guanKa)

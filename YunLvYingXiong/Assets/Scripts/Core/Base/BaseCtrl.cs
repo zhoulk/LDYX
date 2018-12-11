@@ -16,6 +16,10 @@ public class BaseCtrl {
 
     public virtual void Start(params object[] args) { }
 
+    public virtual void Show(params object[] args) { }
+
+    public virtual void Hide() { }
+
     public virtual void OnDestroy() { }
 
     public virtual void OnUpdate() { }

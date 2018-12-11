@@ -11,13 +11,20 @@ public class UIGuanKaMenuViewCtrl : BaseCtrl
         this.view = ViewManager.Instance.CreateView(this, PanelNames.UIGuanKaMenu, args);
     }
 
+    public override void Show(params object[] args)
+    {
+        this.view.OnResume(args);
+    }
+
     public void Close()
     {
         CtrlManager.Instance.CloseCtrl(CtrlNames.UIGuanKaMenu);
+        CtrlManager.Instance.OpenCtrl(CtrlNames.UIMain);
     }
 
     public void ShowGuanKaDetail(GuanKa guanKa)
     {
         CtrlManager.Instance.OpenCtrl(CtrlNames.UIGuanKaDetail, guanKa);
+        CtrlManager.Instance.CloseCtrl(CtrlNames.UIGuanKaMenu);
     }
 }

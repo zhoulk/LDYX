@@ -18,5 +18,6 @@ public class UIMainViewCtrl : BaseCtrl
     public void ShowGuanKaMenu()
     {
         CtrlManager.Instance.OpenCtrl(CtrlNames.UIGuanKaMenu);
+        CtrlManager.Instance.CloseCtrl(CtrlNames.UIMain);
     }
 }

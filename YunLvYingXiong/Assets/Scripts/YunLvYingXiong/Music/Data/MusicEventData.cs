@@ -38,4 +38,8 @@ public class MusicEventData {
     /// 歌词
     /// </summary>
     public string content;
+    /// <summary>
+    /// 取样长度
+    /// </summary>
+    public float sampleLen;
 }

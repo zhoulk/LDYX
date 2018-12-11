@@ -34,6 +34,8 @@ public class UIGuanKaDetailView : BaseView{
         InitTopUI();
         InitCenterUI();
 
+        InitNavi();
+
         m_GuanKa = (GuanKa)args[0];
         m_GuanKa.level = GuanKaLevel.Easy;
     }
@@ -55,6 +57,26 @@ public class UIGuanKaDetailView : BaseView{
         UIEventManager.Instance.AddOnClickHandler(m_MidBtn, OnMidClick);
         UIEventManager.Instance.AddOnClickHandler(m_HardBtn, OnHardClick);
         UIEventManager.Instance.AddOnClickHandler(m_GoBtn, OnGoClick);
+    }
+
+    void InitNavi()
+    {
+        m_BackBtn.AddNaviDown(m_EasyBtn);
+        m_EasyBtn.AddNaviRight(m_MidBtn);
+        m_MidBtn.AddNaviRight(m_HardBtn);
+        m_HardBtn.AddNaviRight(m_EasyBtn);
+
+        m_EasyBtn.AddNaviUp(m_BackBtn);
+        m_MidBtn.AddNaviUp(m_BackBtn);
+        m_HardBtn.AddNaviUp(m_BackBtn);
+
+        m_EasyBtn.AddNaviDown(m_GoBtn);
+        m_MidBtn.AddNaviDown(m_GoBtn);
+        m_HardBtn.AddNaviDown(m_GoBtn);
+
+        m_GoBtn.AddNaviUp(m_EasyBtn);
+
+        m_EasyBtn.SetAsDefaultNavi();
     }
 
     void OnBackClick(GameObject obj)
